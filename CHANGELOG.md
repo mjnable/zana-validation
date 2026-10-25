@@ -10,6 +10,10 @@ not change this package is not listed.
 - `Violation::$template` and `$parameters`, and an optional `MessageTranslatorInterface` for the
   `Validator` (FE-02).
 
+## 2.0.0 — 2026-10-26
+
+The final 2.0 release. No changes since 2.0.0-rc.1.
+
 ## 2.0.0-beta.1 — 2026-10-25
 
 ### Added
