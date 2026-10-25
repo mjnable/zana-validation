@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace Zana\Validation;
 
+use Zana\Validation\Constraint\Constraint;
 use Zana\Validation\Constraint\ConstraintInterface;
 use Zana\Validation\Constraint\Valid;
 
 /**
  * Validates objects against the constraint attributes on their properties.
+ *
+ * With a MessageTranslatorInterface, violation messages are translated from
+ * their template and parameters.
  */
 final class Validator
 {
     /** @var array<class-string, list<array{\ReflectionProperty, list<ConstraintInterface>, bool}>> */
     private array $metadata = [];
+
+    public function __construct(private readonly ?MessageTranslatorInterface $translator = null)
+    {
+    }
 
     public function validate(object $object): ViolationList
     {
@@ -53,7 +61,11 @@ final class Validator
             foreach ($constraints as $constraint) {
                 $message = $constraint->validate($value);
                 if ($message !== null) {
-                    $violations[] = new Violation($path, $message, substr((string) strrchr('\\' . $constraint::class, '\\'), 1));
+                    [$template, $parameters] = ($constraint instanceof Constraint ? $constraint->takeLastMessage() : null) ?? [$message, []];
+                    if ($this->translator !== null) {
+                        $message = $this->translator->translate($template, $parameters);
+                    }
+                    $violations[] = new Violation($path, $message, substr((string) strrchr('\\' . $constraint::class, '\\'), 1), $template, $parameters);
                 }
             }
 

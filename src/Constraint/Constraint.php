@@ -11,8 +11,25 @@ namespace Zana\Validation\Constraint;
  */
 abstract class Constraint implements ConstraintInterface
 {
+    /** @var array{string, array<string, scalar|null>}|null The template and parameters of the last message */
+    private ?array $lastMessage = null;
+
     public function __construct(protected readonly ?string $message = null)
     {
+    }
+
+    /**
+     * The template and parameters of the message the last validate() call
+     * returned, for translation; cleared by reading it.
+     *
+     * @internal Used by the Validator.
+     * @return array{string, array<string, scalar|null>}|null
+     */
+    public function takeLastMessage(): ?array
+    {
+        [$last, $this->lastMessage] = [$this->lastMessage, null];
+
+        return $last;
     }
 
     /**
@@ -22,11 +39,14 @@ abstract class Constraint implements ConstraintInterface
      */
     protected function message(string $default, array $parameters = []): string
     {
+        $template = $this->message ?? $default;
+        $this->lastMessage = [$template, $parameters];
+
         $replacements = [];
         foreach ($parameters as $name => $value) {
             $replacements['{' . $name . '}'] = (string) $value;
         }
 
-        return strtr($this->message ?? $default, $replacements);
+        return strtr($template, $replacements);
     }
 }
