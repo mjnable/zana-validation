@@ -3,9 +3,12 @@
 All Zana packages share one version number and are released together. A release that did
 not change this package is not listed.
 
-## 2.0.0 — 2026-10-26
+## 2.1.0 — unreleased
 
-The final 2.0 release. No changes since 2.0.0-rc.1.
+### Added
+
+- `Violation::$template` and `$parameters`, and an optional `MessageTranslatorInterface` for the
+  `Validator` (FE-02).
 
 ## 2.0.0-beta.1 — 2026-10-25
 

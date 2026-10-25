@@ -41,6 +41,13 @@ Constraints other than `NotBlank` and `NotNull` pass on `null`.
 Each accepts a `message` with `{min}`, `{max}` or `{choices}` placeholders.
 Custom constraints implement `ConstraintInterface` and are attributes.
 
+## New in 2.1
+
+Each `Violation` keeps its message `template` and `parameters`. Give the
+`Validator` a `MessageTranslatorInterface` to translate them;
+`mj-zana/translation` registers one, so custom messages can be keys:
+`#[NotBlank(message: 'contact.error.name_required')]`.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
