@@ -3,6 +3,17 @@
 All Zana packages share one version number and are released together. A release that did
 not change this package is not listed.
 
+## 2.10.0 — 2026-11-01
+
+### Added
+
+- `ValidationBehavior`: with mj-zana/mediator, validates every command and query before its handler
+  runs; opt-in through `mediator.behaviors` (FE-53, ADR-025).
+- `ValidationExceptionMapper`: with mj-zana/http, a `ValidationException` is a 422 with `errors` per
+  field.
+- Both are registered by `ValidationServiceProvider` only when their package is installed; the library
+  still requires only PHP.
+
 ## 2.4.0 — 2026-10-26
 
 ### Changed

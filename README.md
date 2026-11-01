@@ -48,6 +48,18 @@ Each `Violation` keeps its message `template` and `parameters`. Give the
 `mj-zana/translation` registers one, so custom messages can be keys:
 `#[NotBlank(message: 'contact.error.name_required')]`.
 
+## New in 2.10
+
+- **`ValidationBehavior`** (with `mj-zana/mediator`): validates every command
+  and query before its handler runs, whatever sends it. Opt-in:
+  `return ['behaviors' => [ValidationBehavior::class]];` in
+  `config/mediator.php`.
+- **`ValidationExceptionMapper`** (with `mj-zana/http`): a `ValidationException`
+  that reaches `ErrorMiddleware` is a 422 with `errors` per field.
+
+The provider registers each only when its package is installed; the library
+itself still needs nothing but PHP.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
